@@ -7,9 +7,11 @@ const { randomBytes } = require('ethers');
 const { hexToBytes } = require('@noble/hashes/utils');
 const {
   makeCastAdd,
+  makeReactionAdd,
   NobleEd25519Signer,
   FarcasterNetwork,
   Message,
+  ReactionType,
 } = require('@farcaster/hub-nodejs');
 const https = require('https');
 
@@ -173,4 +175,129 @@ async function postCast(options) {
   return { hash, url };
 }
 
-module.exports = { postCast };
+/**
+ * Submit a serialized message to Neynar hub (used by like/recast/reply).
+ */
+async function submitMessage(wallet, messageBytes, paymentHeader) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname: NEYNAR_HUB,
+        port: 443,
+        path: '/v1/submitMessage',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Content-Length': messageBytes.length,
+          'X-PAYMENT': paymentHeader,
+        },
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => {
+          if (res.statusCode !== 200) {
+            try {
+              reject(new Error(`Neynar ${res.statusCode}: ${JSON.stringify(JSON.parse(data))}`));
+            } catch {
+              reject(new Error(`Neynar ${res.statusCode}: ${data}`));
+            }
+            return;
+          }
+          resolve();
+        });
+      }
+    );
+    req.on('error', reject);
+    req.write(messageBytes);
+    req.end();
+  });
+}
+
+/**
+ * Like or recast a cast. targetHash: hex string with or without 0x.
+ */
+async function postReaction(options) {
+  const { fid, signerPrivateKey, privateKey, targetFid, targetHash, type } = options;
+  if (!privateKey) throw new Error('postReaction requires privateKey');
+  const fidNum = Number(fid);
+  const targetFidNum = Number(targetFid);
+  const hashHex = targetHash.replace(/^0x/, '');
+  const hashBytes = Buffer.from(hashHex, 'hex');
+
+  const signerKey = signerPrivateKey.startsWith('0x') ? signerPrivateKey.slice(2) : signerPrivateKey;
+  const ed25519Signer = new NobleEd25519Signer(hexToBytes(signerKey));
+
+  const network =
+    (options.network || process.env.FC_NETWORK || 'MAINNET').toUpperCase() === 'TESTNET'
+      ? FarcasterNetwork.TESTNET
+      : FarcasterNetwork.MAINNET;
+
+  const reactionResult = await makeReactionAdd(
+    {
+      type: type === 'recast' ? ReactionType.RECAST : ReactionType.LIKE,
+      targetCastId: { fid: targetFidNum, hash: hashBytes },
+    },
+    { fid: fidNum, network },
+    ed25519Signer
+  );
+
+  if (reactionResult.isErr()) {
+    throw new Error(`makeReactionAdd failed: ${reactionResult.error.message}`);
+  }
+
+  const messageBytes = Buffer.from(Message.encode(reactionResult.value).finish());
+  const baseProvider = new JsonRpcProvider('https://mainnet.base.org');
+  const wallet = new Wallet(privateKey, baseProvider);
+  const paymentHeader = await createX402Header(wallet);
+  await submitMessage(wallet, messageBytes, paymentHeader);
+  return { ok: true, type };
+}
+
+/**
+ * Reply to a cast. parentHash: hex string with or without 0x.
+ */
+async function postReply(options) {
+  const { fid, signerPrivateKey, privateKey, text, parentFid, parentHash } = options;
+  if (!privateKey) throw new Error('postReply requires privateKey');
+  const fidNum = Number(fid);
+  const parentFidNum = Number(parentFid);
+
+  const signerKey = signerPrivateKey.startsWith('0x') ? signerPrivateKey.slice(2) : signerPrivateKey;
+  const ed25519Signer = new NobleEd25519Signer(hexToBytes(signerKey));
+
+  const network =
+    (options.network || process.env.FC_NETWORK || 'MAINNET').toUpperCase() === 'TESTNET'
+      ? FarcasterNetwork.TESTNET
+      : FarcasterNetwork.MAINNET;
+
+  const parentUrl = `https://warpcast.com/~/conversations/0x${parentHash.replace(/^0x/, '')}`;
+
+  const castResult = await makeCastAdd(
+    {
+      text: (text || '').slice(0, 320),
+      embeds: [],
+      embedsDeprecated: [],
+      mentions: [],
+      mentionsPositions: [],
+      parentUrl,
+    },
+    { fid: fidNum, network },
+    ed25519Signer
+  );
+
+  if (castResult.isErr()) {
+    throw new Error(`makeCastAdd reply failed: ${castResult.error.message}`);
+  }
+
+  const messageBytes = Buffer.from(Message.encode(castResult.value).finish());
+  const baseProvider = new JsonRpcProvider('https://mainnet.base.org');
+  const wallet = new Wallet(privateKey, baseProvider);
+  const paymentHeader = await createX402Header(wallet);
+  await submitMessage(wallet, messageBytes, paymentHeader);
+
+  const hash = '0x' + Buffer.from(castResult.value.hash).toString('hex');
+  return { hash, url: `https://warpcast.com/~/conversations/${hash}` };
+}
+
+module.exports = { postCast, postReaction, postReply };

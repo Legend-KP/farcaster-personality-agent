@@ -1,9 +1,22 @@
 const fs = require('fs');
 const path = require('path');
-const { postCast } = require('./farcaster-client');
+const { postCast, postReaction, postReply } = require('./farcaster-client');
 const { loadCredentials } = require('./credentials');
 const PersonalityEngine = require('./personality/engine');
 const { ARCHETYPES } = require('./personality/traits');
+const { getTrendingFeed } = require('./neynar-feed');
+
+const REPLY_PHRASES = [
+  'Great point.',
+  'Interesting take.',
+  'Thanks for sharing.',
+  'Love this.',
+  'So true.',
+  'Agreed.',
+  'This.',
+  '👀',
+  '✨',
+];
 
 function loadCustomContent() {
   const filePath = process.env.CASTS_FILE || path.join(process.cwd(), 'content.txt');
@@ -138,6 +151,45 @@ class FarcasterAgent {
           }
         } else {
           console.log('⏭️  Skipping post (personality check)\n');
+        }
+
+        const engageEnabled = process.env.ENGAGE_ENABLED === '1' || process.env.ENGAGE_ENABLED === 'true';
+        if (engageEnabled && process.env.NEYNAR_API_KEY) {
+          try {
+            const feed = await getTrendingFeed(15);
+            if (feed.length > 0 && this.personality.shouldEngageWith()) {
+              const cast = feed[Math.floor(Math.random() * feed.length)];
+              const hash = cast.hash.startsWith('0x') ? cast.hash : '0x' + cast.hash;
+              const actions = ['like', 'recast', 'reply'];
+              const weights = [0.5, 0.25, 0.25];
+              let r = Math.random();
+              const action = weights.reduce((a, w, i) => (r -= w, r <= 0 ? actions[i] : a), actions[0]);
+              const opts = {
+                fid: Number(this.credentials.fid),
+                signerPrivateKey: this.credentials.signerPrivateKey,
+                privateKey: this.credentials.custodyPrivateKey,
+                targetFid: cast.fid,
+                targetHash: hash,
+              };
+              if (action === 'like' || action === 'recast') {
+                await postReaction({ ...opts, type: action });
+                console.log(`👍 ${action === 'like' ? 'Liked' : 'Recast'} cast ${hash.slice(0, 18)}...\n`);
+              } else {
+                const replyText = REPLY_PHRASES[Math.floor(Math.random() * REPLY_PHRASES.length)];
+                await postReply({
+                  fid: Number(this.credentials.fid),
+                  signerPrivateKey: this.credentials.signerPrivateKey,
+                  privateKey: this.credentials.custodyPrivateKey,
+                  text: replyText,
+                  parentFid: cast.fid,
+                  parentHash: hash,
+                });
+                console.log(`💬 Replied to cast ${hash.slice(0, 18)}...\n`);
+              }
+            }
+          } catch (e) {
+            if (e.message && !e.message.includes('NEYNAR_API_KEY')) console.error('Engagement:', e.message);
+          }
         }
 
         const waitMinutes = this.personality.getActionIntervalMinutes();
