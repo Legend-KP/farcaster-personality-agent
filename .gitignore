@@ -1,0 +1,8 @@
+node_modules/
+farcaster-lib/
+.env
+credentials.json
+setup-progress.json
+*.log
+.DS_Store
+.env.example
