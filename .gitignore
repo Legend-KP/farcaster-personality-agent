@@ -6,3 +6,5 @@ setup-progress.json
 *.log
 .DS_Store
 .env.example
+posted-casts.json
+engaged-mentions.json

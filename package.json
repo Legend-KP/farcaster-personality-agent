@@ -15,7 +15,8 @@
     "run:achiever": "node run.js achiever",
     "run:guardian": "node run.js guardian",
     "run:connector": "node run.js connector",
-    "run:maverick": "node run.js maverick"
+    "run:maverick": "node run.js maverick",
+    "run-enhanced": "node run-enhanced.js"
   },
   "keywords": [
     "farcaster",
@@ -30,7 +31,8 @@
     "@farcaster/hub-nodejs": "^0.13.0",
     "@noble/hashes": "^1.4.0",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.0"
+    "ethers": "^6.13.0",
+    "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

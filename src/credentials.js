@@ -4,15 +4,24 @@ const path = require('path');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
 
 /**
+ * Get display username: AGENT_USERNAME (avoids Windows USERNAME = computer name).
+ */
+function getUsername() {
+  return process.env.AGENT_USERNAME || null;
+}
+
+/**
  * Load Farcaster credentials from credentials.json or env.
- * @returns {{ fid: string, signerPrivateKey: string, custodyPrivateKey?: string }}
+ * @returns {{ fid: string, signerPrivateKey: string, custodyPrivateKey?: string, username?: string }}
  */
 function loadCredentials() {
   if (process.env.FID && process.env.SIGNER_PRIVATE_KEY) {
+    console.log('📄 Loaded credentials from .env');
     return {
       fid: process.env.FID,
       signerPrivateKey: process.env.SIGNER_PRIVATE_KEY,
       custodyPrivateKey: process.env.CUSTODY_PRIVATE_KEY,
+      username: getUsername(),
     };
   }
 
@@ -29,7 +38,10 @@ function loadCredentials() {
       'credentials.json must contain fid and signerPrivateKey. Re-run setup.js.'
     );
   }
-  return data;
+  // Prefer AGENT_USERNAME so Windows USERNAME doesn't override
+  const username = getUsername() || data.username || null;
+  console.log('📄 Loaded credentials from credentials.json');
+  return { ...data, username };
 }
 
 /**
@@ -43,4 +55,4 @@ function saveCredentials(credentials) {
   );
 }
 
-module.exports = { loadCredentials, saveCredentials, CREDENTIALS_PATH };
+module.exports = { loadCredentials, saveCredentials, getUsername, CREDENTIALS_PATH };

@@ -9,12 +9,20 @@ class PersonalityEngine {
   }
 
   /**
+   * Post probability for display (0–1). Explorer-style: high stimulation → post often.
+   */
+  getPostProbability() {
+    const baseRate = 0.5 + (this.traits.stimulation / 20);
+    const spontaneity = this.traits.selfDirection / 20;
+    return Math.min(0.95, baseRate + spontaneity);
+  }
+
+  /**
    * Decide whether the agent should post in this cycle (based on stimulation & self-direction).
+   * Tuned so explorer posts most cycles (e.g. 87–95%).
    */
   shouldPost() {
-    const baseRate = this.traits.stimulation / 10;
-    const spontaneity = this.traits.selfDirection / 10;
-    const probability = (baseRate * 0.7 + spontaneity * 0.3) * 0.35; // reduced: ~1–3 posts per interval cycle
+    const probability = this.getPostProbability();
     return Math.random() < probability;
   }
 
@@ -49,11 +57,11 @@ class PersonalityEngine {
   }
 
   /**
-   * Minutes between actions (higher stimulation = more frequent).
+   * Minutes between actions (higher stimulation = more frequent). Range ~4–10 min.
    */
   getActionIntervalMinutes() {
-    const base = 90; // 1.5 hours between checks
-    const variance = 10; // ±10 min
+    const base = 7;
+    const variance = 3;
     return base + (Math.random() * 2 - 1) * variance;
   }
 }

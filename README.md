@@ -130,6 +130,11 @@ You can extend the engine with:
 - **Risk**: Use `getTradingRiskLevel()` for future wallet/trading behavior.
 - **Emergent interests**: Feed `memory` and `preferences` from engagement and adapt content over time.
 
+## Troubleshooting
+
+- **"Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0'..."**  
+  A dependency may set this, making HTTPS insecure. Don’t set `NODE_TLS_REJECT_UNAUTHORIZED=0` in your `.env`. If the warning still appears, it comes from a dependency and can usually be ignored unless you need strict TLS.
+
 ## Security
 
 - Never commit `.env` or `credentials.json`.
