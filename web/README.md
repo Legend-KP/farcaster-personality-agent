@@ -1,6 +1,6 @@
-# Kernel — Landing Page
+# Emris — Landing Page
 
-Next.js (App Router) + TypeScript + Tailwind CSS marketing site for Kernel —
+Next.js (App Router) + TypeScript + Tailwind CSS marketing site for Emris —
 a personality-grounded AI companion that lives in your messages.
 
 ## Stack

@@ -20,7 +20,7 @@ export default function CTA() {
     <section id="get-access" className="border-t border-line py-20 sm:py-[110px]">
       <Reveal className="mx-auto max-w-content px-6 text-center sm:px-8">
         <h2 className="mx-auto max-w-[16ch] font-display text-[30px] font-medium sm:text-[46px]">
-          Meet the version of Kernel that&rsquo;s actually yours.
+          Meet the version of Emris that&rsquo;s actually yours.
         </h2>
         <p className="mx-auto mt-[18px] max-w-[44ch] text-[16.5px] text-muted">
           Early access is rolling out slowly, on purpose. Leave your details

@@ -18,6 +18,14 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const onResize = () => {
+      if (window.matchMedia("(min-width: 640px)").matches) setMenuOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
@@ -28,15 +36,19 @@ export default function Header() {
     >
       <div className="mx-auto max-w-content px-6 sm:px-8 flex items-center justify-between">
         <a href="#top" className="font-display italic text-xl text-paper">
-          Kernel
+          Emris
         </a>
 
         <nav
           className={`
-            sm:static sm:flex sm:items-center sm:gap-9 sm:opacity-100 sm:pointer-events-auto sm:translate-y-0 sm:bg-transparent sm:p-0
-            fixed inset-x-0 top-[64px] bottom-0 bg-ink flex flex-col items-start gap-6 p-8
+            fixed inset-x-0 top-[64px] bottom-0 z-40 flex flex-col items-start gap-6 bg-ink p-8
             transition-all duration-300
-            ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none sm:opacity-100 sm:translate-y-0 sm:pointer-events-auto"}
+            sm:static sm:inset-auto sm:z-auto sm:flex-row sm:items-center sm:gap-9 sm:bg-transparent sm:p-0
+            ${
+              menuOpen
+                ? "pointer-events-auto translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-2 opacity-0 sm:pointer-events-auto sm:translate-y-0 sm:opacity-100"
+            }
           `}
         >
           {NAV_LINKS.map((link) => (

@@ -32,7 +32,7 @@ export default function Memory() {
             Tell it once.
           </h2>
           <p className="mt-[18px] max-w-[46ch] text-[16.5px] leading-[1.65] text-muted">
-            Kernel remembers the things you&rsquo;d otherwise repeat, and lets
+            Emris remembers the things you&rsquo;d otherwise repeat, and lets
             its personality decide what to do with them — not just when to
             remind you, but whether to bring it up at all.
           </p>

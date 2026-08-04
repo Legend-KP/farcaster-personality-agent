@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <a href="#top" className="mb-2.5 block font-display italic text-xl">
-              Kernel
+              Emris
             </a>
             <p className="max-w-[34ch] text-[13.5px] text-muted">
               A companion with an actual personality — in your messages, not
@@ -33,7 +33,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="mt-[34px] border-t border-line pt-[22px] text-[12.5px] text-muted">
-          © 2026 Kernel. Not affiliated with any messaging platform mentioned.
+          © 2026 Emris. Not affiliated with any messaging platform mentioned.
         </div>
       </div>
     </footer>

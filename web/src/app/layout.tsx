@@ -25,13 +25,13 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kernel — A companion with an actual personality",
+  title: "Emris — A companion with an actual personality",
   description:
-    "Kernel lives in your texts, remembers what you tell it once, and reaches out on its own — the way it does that depends on who it is, not a mood you set.",
+    "Emris lives in your texts, remembers what you tell it once, and reaches out on its own — the way it does that depends on who it is, not a mood you set.",
   openGraph: {
-    title: "Kernel — A companion with an actual personality",
+    title: "Emris — A companion with an actual personality",
     description:
-      "Kernel lives in your texts, remembers what you tell it once, and reaches out on its own.",
+      "Emris lives in your texts, remembers what you tell it once, and reaches out on its own.",
     type: "website",
   },
 };

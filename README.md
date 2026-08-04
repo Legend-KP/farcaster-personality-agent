@@ -1,4 +1,4 @@
-# Kernel
+# Emris
 
 Personality-grounded AI companion (working name). Website-first for now; product/backend work comes later.
 

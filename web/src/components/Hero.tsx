@@ -9,7 +9,7 @@ export default function Hero() {
             A companion with <em className="text-amber italic">an actual</em> personality.
           </h1>
           <p className="mt-6 max-w-[44ch] text-lg leading-[1.65] text-muted">
-            Kernel lives in your texts, remembers what you tell it once, and
+            Emris lives in your texts, remembers what you tell it once, and
             reaches out on its own — the way it does that depends on who it
             is, not a mood you set.
           </p>

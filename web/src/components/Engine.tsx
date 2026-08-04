@@ -12,7 +12,7 @@ export default function Engine() {
             Personality, not prompts
           </h2>
           <p className="mt-[18px] max-w-[46ch] text-[16.5px] leading-[1.65] text-muted">
-            Most assistants fake a personality with a tone of voice. Kernel
+            Most assistants fake a personality with a tone of voice. Emris
             runs on ten weighted values — the same framework psychologists
             use to describe real people — and those weights decide what it
             does, not just how it sounds.

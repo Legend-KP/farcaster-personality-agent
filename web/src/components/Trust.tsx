@@ -14,7 +14,7 @@ const TIERS = [
   {
     num: "TIER 2",
     title: "Earned",
-    body: "Once you've approved the same kind of action enough times, Kernel does it without asking.",
+    body: "Once you've approved the same kind of action enough times, Emris does it without asking.",
   },
 ];
 
@@ -28,7 +28,7 @@ export default function Trust() {
             It earns the rest.
           </h2>
           <p className="mt-[18px] text-[16.5px] leading-[1.65] text-muted">
-            Every Kernel starts cautious. As you approve the same kind of
+            Every Emris starts cautious. As you approve the same kind of
             action enough times, it starts handling that kind on its own —
             one action at a time, never all at once.
           </p>

@@ -43,7 +43,7 @@ export default function MessageDemo() {
     <div className="rounded-[20px] border border-line bg-surface p-6 pb-5">
       <div className="mb-4 flex items-center justify-between">
         <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-          Same day. Different Kernel.
+          Same day. Different Emris.
         </span>
       </div>
 

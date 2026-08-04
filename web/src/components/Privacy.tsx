@@ -7,7 +7,7 @@ export default function Privacy() {
         <Reveal className="flex flex-wrap items-center justify-between gap-10">
           <p className="max-w-[52ch] text-base text-muted">
             <b className="font-semibold text-paper">
-              Nothing you tell Kernel is sold, shared, or used to train models
+              Nothing you tell Emris is sold, shared, or used to train models
               for anyone else.
             </b>{" "}
             Disconnect and delete everything, any time.
