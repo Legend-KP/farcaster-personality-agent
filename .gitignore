@@ -8,3 +8,10 @@ setup-progress.json
 .env.example
 posted-casts.json
 engaged-mentions.json
+
+# Next.js (web/)
+web/.next/
+web/out/
+web/node_modules/
+web/*.tsbuildinfo
+web/.env*.local

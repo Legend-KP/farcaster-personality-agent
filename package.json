@@ -4,6 +4,10 @@
   "description": "Autonomous AI agents on Farcaster with Schwartz Value Theory personality profiles",
   "main": "run.js",
   "scripts": {
+    "web": "npm run dev --prefix web",
+    "web:build": "npm run build --prefix web",
+    "web:start": "npm run start --prefix web",
+    "web:install": "npm install --prefix web",
     "setup": "node setup.js",
     "register": "node register-with-openclaw.js",
     "register:simple": "node register-simple.js",

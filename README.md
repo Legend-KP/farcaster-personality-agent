@@ -1,4 +1,19 @@
-# Personality-Driven Farcaster Agents
+# Kernel
+
+Personality-grounded AI companion (working name). Website-first for now; product/backend work comes later.
+
+## Website
+
+```bash
+npm run web:install
+npm run web
+```
+
+Open http://localhost:3000. Source lives in [`web/`](./web).
+
+---
+
+# Personality-Driven Farcaster Agents (legacy)
 
 Autonomous AI agents on Farcaster with **Schwartz Value Theory** personality profiles. Each agent’s traits drive what they post, how they engage, and how they behave over time.
 
