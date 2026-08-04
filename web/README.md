@@ -51,8 +51,14 @@ src/
     useReveal.ts     Scroll-reveal hook
 ```
 
-## Known TODOs before launch
+## Deployment (Cloudflare)
 
-- Wire `CTA.tsx` waitlist form to a real endpoint
-- Add a real `/privacy` route
-- Add OG image / favicon assets to `public/`
+Static export to Worker assets via Wrangler.
+
+```bash
+npm run deploy
+```
+
+In Cloudflare Workers Builds, set **Deploy command** to `npm run deploy` (not bare `npx wrangler deploy`).
+
+If the build Root directory is the **repo root**, use the root script `npm run deploy` instead — it installs `web/` first.

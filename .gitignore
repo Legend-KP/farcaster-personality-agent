@@ -12,6 +12,10 @@ engaged-mentions.json
 # Next.js (web/)
 web/.next/
 web/out/
+web/.open-next/
+web/.wrangler/
 web/node_modules/
 web/*.tsbuildinfo
 web/.env*.local
+web/.dev.vars
+README.md

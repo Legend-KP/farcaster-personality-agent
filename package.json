@@ -1,13 +1,15 @@
 {
   "name": "farcaster-personality-agent",
   "version": "1.0.0",
-  "description": "Autonomous AI agents on Farcaster with Schwartz Value Theory personality profiles",
+  "private": true,
+  "description": "Kernel — personality-grounded AI companion (website + legacy agent)",
   "main": "run.js",
   "scripts": {
     "web": "npm run dev --prefix web",
     "web:build": "npm run build --prefix web",
     "web:start": "npm run start --prefix web",
     "web:install": "npm install --prefix web",
+    "deploy": "npm install --prefix web && npm run deploy --prefix web",
     "setup": "node setup.js",
     "register": "node register-with-openclaw.js",
     "register:simple": "node register-simple.js",
@@ -23,6 +25,7 @@
     "run-enhanced": "node run-enhanced.js"
   },
   "keywords": [
+    "kernel",
     "farcaster",
     "agent",
     "personality",

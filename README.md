@@ -11,6 +11,22 @@ npm run web
 
 Open http://localhost:3000. Source lives in [`web/`](./web).
 
+### Deploy to Cloudflare
+
+The site is a static Next.js export served as Worker assets.
+
+**Cloudflare Workers Builds settings:**
+
+| Setting | Value |
+|---------|--------|
+| Root directory | `/` (repo root) **or** `web` |
+| Build command | leave empty (or `npm run build` if root is `web`) |
+| Deploy command | `npm run deploy` |
+
+- If **root directory is `/`**: deploy command must be `npm run deploy` (installs `web/`, builds, then wrangler).
+- If **root directory is `web`**: deploy command can be `npm run deploy` as well.
+- Do **not** use bare `npx wrangler deploy` — that skips the Next.js build and fails with “Could not detect a directory containing static files”.
+
 ---
 
 # Personality-Driven Farcaster Agents (legacy)
